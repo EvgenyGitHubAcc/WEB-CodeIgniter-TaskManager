@@ -1,26 +1,27 @@
 <?php
 
-//require_once '../third_party/connection.php';
+//require_once '../connection.php';
 
 class Tasks extends CI_Controller
 {
     private $db = null;
     private $query = null;
+    private $result = null;
 
     public function __construct()
     {
         parent::__construct();
         session_start();
 
-        $this->load->connection('../third_party/connection.php');
+        $this->load->connection('../connection.php');
 
-        $this->$db = mysqli_connect($host, $user, $password, $database);
+        $this->db = mysqli_connect($host, $user, $password, $database);
         $this->load->view('login.php');
     }
 
     public function __destruct()
     {
-        mysqli_close($this->$db);
+        mysqli_close($this->db);
     }
 
     public function addBtnPr()
@@ -61,18 +62,18 @@ class Tasks extends CI_Controller
 
     public function fillFields($rowNumber)
     {
-        $query = "SELECT * FROM `tasks` WHERE Id = " . $rowNumber;
+        $this->query = "SELECT * FROM `tasks` WHERE Id = " . $rowNumber;
 
-        $result = mysqli_fetch_assoc(mysqli_query($db, $query));
+        $this->result = mysqli_fetch_assoc(mysqli_query($db, $query));
 
-        $this->load->view('modifyTask.php', $result, $rowNumber);
+        $this->load->view('modifyTask.php', $this->result, $rowNumber);
     }
 
     public function updateTask()
     {
-        $query ="SELECT * FROM tasks WHERE UserId = ". $_SESSION['Id'];
+        $this->query ="SELECT * FROM tasks WHERE UserId = ". $_SESSION['Id'];
 
-        if(!$result = mysqli_query($this->$db, $query))
+        if(!$this->result = mysqli_query($this->db, $this->query))
         {
             exit();
         }
@@ -91,8 +92,8 @@ class Tasks extends CI_Controller
         {
             if(strtotime($_POST['Date']))
             {
-                $query ="SELECT COUNT(*) AS `COUNT` FROM tasks";
-                mysqli_fetch_row(mysqli_query($this->$db, $query));
+                $this->query ="SELECT COUNT(*) AS `COUNT` FROM tasks";
+                mysqli_fetch_row(mysqli_query($this->db, $this->query));
 
                 $query ="INSERT INTO `tasks` (`UserId`, `DeadLine`, `Task`) 
                     VALUES  (
@@ -100,7 +101,7 @@ class Tasks extends CI_Controller
                     '" . strtotime($_POST['Date']) . "',
                     '" . $_POST['Task'] . "')";
 
-                mysqli_query($db, $query);
+                mysqli_query($this->db, $this->query);
                 $this->updateTask();
             }
         }
@@ -110,7 +111,7 @@ class Tasks extends CI_Controller
     {
         $query ="DELETE FROM `tasks` WHERE Id = " . $rowNumber . " AND UserId = " . $_SESSION['Id'];
 
-        $result = mysqli_query($this->$db, $query);
+        $result = mysqli_query($this->db, $this->query);
 
         while($row = mysqli_fetch_assoc($result))
         {
@@ -122,7 +123,7 @@ class Tasks extends CI_Controller
 
     public  function modifyTask($rowNumber)
     {
-        $query = "UPDATE `tasks`
+        $this->query = "UPDATE `tasks`
             SET DeadLine = " .  strtotime($_POST['Date']) . ", 
                 Task = '" .  $_POST['Task'] . "'
             WHERE Id = " . $rowNumber;
