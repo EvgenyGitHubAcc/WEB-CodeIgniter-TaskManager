@@ -5,17 +5,17 @@
 </head>
 <body>
 
-<form action="../controllers/tasks.php" method="post">
+<form action="/Tasks/addBtnPr" method="post">
     <input type="date" name="Date" value="2019-01-01">
     <input type="text" name="Task" placeholder="Введите задание">
     <input name="AddBtn" value="Добавить" type="submit">
 </form>
 
-<form action="../controllers/tasks.php" method="post">
+<form action="/Users/logout" method="post">
     <input name="LogoutBtn" value="Выйти" type="submit">
 </form>
 
-<form action='../controllers/tasks.php' method='post'>
+<form action='/Users/delBtnPr' method='post'>
     <input name='DelProfBtn' value='Удалить профиль' type='submit'>
 </form>
 
@@ -27,7 +27,7 @@
         <th>Редактирование</th>
     </tr>
 
-    <?php
+<?php
     for($i = 0; $i < count($arrayStr); ++$i)
     {
         if($arrayStr[$i]['DeadLine'] - time() > 60 * 60 * 24)
@@ -36,10 +36,10 @@
                 <td>" . date("d.m.Y", (int)$arrayStr[$i]['DeadLine']) . "</td>
                 <td>" . $arrayStr[$i]['Task'] . "</td>
                 <td>
-                    <a href='delete.php?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
+                    <a href='/Tasks/delLnkPr?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
                 </td>
                  <td>
-                    <a href='modify .php?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
+                    <a href='/Tasks/modLnkPr?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
                 </td>
              </tr>";
         }
@@ -49,10 +49,10 @@
                 <td bgcolor='orange'>" . date("d.m.Y", (int)$arrayStr[$i]['DeadLine']) . "</td>
                 <td bgcolor='orange'>" . $arrayStr[$i]['Task'] . "</td>
                 <td bgcolor='orange'>
-                    <a href='delete.php?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
+                    <a href='/Tasks/delLnkPr?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
                 </td>
                  <td bgcolor='red'>
-                    <a href='modify.php?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
+                    <a href='/Tasks/modLnkPr?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
                 </td>
              </tr>";
         }
@@ -62,15 +62,15 @@
                 <td bgcolor='red'>" . date("d.m.Y", (int)$arrayStr[$i]['DeadLine']) . "</td>
                 <td bgcolor='red'>" . $arrayStr[$i]['Task'] . "</td>
                 <td bgcolor='red'>
-                    <a href='delete.php?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
+                    <a href='/Tasks/delLnkPr?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
                 </td>
                  <td bgcolor='red'>
-                    <a href='modify.php?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
+                    <a href='/Tasks/modLnkPr?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
                 </td>
              </tr>";
         }
     }
-    ?>
+?>
 </table>
 </body>
 </html>

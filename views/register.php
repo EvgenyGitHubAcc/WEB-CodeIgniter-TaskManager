@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form action="../controllers/users.php" method="post">
+<form action="/Users/regAcc" method="post">
         <input type="text" name="Login">
         <input type="text" name="Pass">
         <input name="RegisterBtn" value="Register" type="submit">
