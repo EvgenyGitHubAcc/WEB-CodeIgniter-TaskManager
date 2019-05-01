@@ -6,14 +6,12 @@ class DBModel extends CI_Model
 
     public function __construct()
     {
-        $this->db->select('taskmanager');
+        parent::__construct();
     }
 
     public function selectUsers()
     {
-
         $this->query = $this->db->get('users');
-
         return $this->query->result();
     }
 
@@ -31,10 +29,18 @@ class DBModel extends CI_Model
         $this->db->insert('users', $dataArr);
     }
 
-    public function selectTasks()
-    {
-        $this->query = $this->db->get('tasks');
 
+    public function selectTaskByTaskId($Id)
+    {
+        $this->db->select('*')->from('tasks')->where('Id', $Id);
+        $this->query = $this->db->get();
+        return $this->query->result();
+    }
+
+    public function selectTasksByUser($Id)
+    {
+        $this->db->select('*')->from('tasks')->where('UserId', $Id);
+        $this->query = $this->db->get();
         return $this->query->result();
     }
 
@@ -53,13 +59,12 @@ class DBModel extends CI_Model
         $this->db->delete('tasks', array('id' => $Id));
     }
 
-    public function modifyTask($dataArr)
+    public function modifyTask($Id, $dataArr)
     {
 //        $data = array(
-//            'UserId' => $dataArr['UserId'],
 //            'DeadLine' => $dataArr['DeadLine']
 //            'Task' => $dataArr['Task']
 //        );
-        $this->db->replace('tasks', $dataArr);
+        $this->db->where('Id', $Id)->update('tasks', $dataArr);
     }
 }

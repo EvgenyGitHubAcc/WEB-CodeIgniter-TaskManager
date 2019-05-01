@@ -6,7 +6,7 @@
 <body>
 
 <form action="/Tasks/addBtnPr" method="post">
-    <input type="date" name="Date" value="2019-01-01">
+    <input type="date" name="Date" value="<?=date("Y-m-d", time())?>">
     <input type="text" name="Task" placeholder="Введите задание">
     <input name="AddBtn" value="Добавить" type="submit">
 </form>
@@ -27,50 +27,33 @@
         <th>Редактирование</th>
     </tr>
 
-<?php
-    for($i = 0; $i < count($arrayStr); ++$i)
+<?php foreach($arrayStr as $elem):
     {
-        if($arrayStr[$i]['DeadLine'] - time() > 60 * 60 * 24)
+        if($elem->DeadLine - time() > 60 * 60 * 24)
         {
-            echo "<tr>
-                <td>" . date("d.m.Y", (int)$arrayStr[$i]['DeadLine']) . "</td>
-                <td>" . $arrayStr[$i]['Task'] . "</td>
-                <td>
-                    <a href='/Tasks/delLnkPr?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
-                </td>
-                 <td>
-                    <a href='/Tasks/modLnkPr?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
-                </td>
-             </tr>";
+            $color = 'white';
         }
-        else if($arrayStr[$i]['DeadLine'] - time() < 60 * 60 * 24 && $arrayStr[$i]['DeadLine'] - time() > 0)
+        else if($elem->DeadLine - time() < 60 * 60 * 24 && $elem->DeadLine - time() > 0)
         {
-            echo "<tr>
-                <td bgcolor='orange'>" . date("d.m.Y", (int)$arrayStr[$i]['DeadLine']) . "</td>
-                <td bgcolor='orange'>" . $arrayStr[$i]['Task'] . "</td>
-                <td bgcolor='orange'>
-                    <a href='/Tasks/delLnkPr?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
-                </td>
-                 <td bgcolor='red'>
-                    <a href='/Tasks/modLnkPr?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
-                </td>
-             </tr>";
+            $color = 'orange';
         }
         else
         {
-            echo "<tr>
-                <td bgcolor='red'>" . date("d.m.Y", (int)$arrayStr[$i]['DeadLine']) . "</td>
-                <td bgcolor='red'>" . $arrayStr[$i]['Task'] . "</td>
-                <td bgcolor='red'>
-                    <a href='/Tasks/delLnkPr?DelLnk=" . $arrayStr[$i]['Id'] . "' >X</a>
-                </td>
-                 <td bgcolor='red'>
-                    <a href='/Tasks/modLnkPr?ModLnk=" . $arrayStr[$i]['Id'] . "' >M</a>
-                </td>
-             </tr>";
+            $color = 'red';
         }
     }
 ?>
+       <tr>
+           <td bgcolor=<?=$color?> > <?= date("d.m.Y", (int)$elem->DeadLine) ?></td>
+           <td bgcolor=<?=$color?> > <?= $elem->Task ?></td>
+           <td bgcolor=<?=$color?> >
+               <a href= <?='/Tasks/delLnkPr?DelLnk=' . $elem->Id . '' ?> >X</a>
+           </td>
+           <td bgcolor=<?=$color?> >
+               <a href= <?='/Tasks/modLnkPr?ModLnk=' .  $elem->Id .  '' ?> >M</a>
+           </td>
+       </tr>
+<?php endforeach; ?>
 </table>
 </body>
 </html>
